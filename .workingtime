@@ -24,9 +24,7 @@
     },
     "data": [
         {
-            "config": {
-                "showIdle": false
-            },
+            "config": false,
             "user": "edskate",
             "dailySessions": [
                 {
@@ -4785,6 +4783,62 @@
                                 ]
                             },
                             "actionType": "Idle"
+                        }
+                    ]
+                },
+                {
+                    "date": "Tue Aug 11 2026",
+                    "sessions": [
+                        {
+                            "sessionInfo": {
+                                "id": "6c57662e-1bfb-46af-b6c0-2be52e85c97c",
+                                "duration": 462571,
+                                "idle": 851546,
+                                "state": "Ongoing",
+                                "durations": [
+                                    {
+                                        "id": "730124eb-4961-446d-9112-edb36777b40f",
+                                        "state": "Ongoing",
+                                        "begin": 1786427259047,
+                                        "end": 1786427259047,
+                                        "duration": 0
+                                    },
+                                    {
+                                        "id": "89c4384a-defd-4b63-9106-18843aee8967",
+                                        "state": "Idle",
+                                        "begin": 1786427219722,
+                                        "end": 1786427259047,
+                                        "duration": 39325
+                                    },
+                                    {
+                                        "id": "b7ffe994-fa3e-421f-8e25-c2d987ba2470",
+                                        "state": "Ongoing",
+                                        "begin": 1786427217358,
+                                        "end": 1786427219722,
+                                        "duration": 2364
+                                    },
+                                    {
+                                        "id": "f053ff5d-5b88-4a79-a424-a071c000b670",
+                                        "state": "Idle",
+                                        "begin": 1786426867708,
+                                        "end": 1786427217358,
+                                        "duration": 349650
+                                    },
+                                    {
+                                        "id": "17a5df13-0624-4907-83bf-b91f93f61b71",
+                                        "state": "Ongoing",
+                                        "begin": 1786426616187,
+                                        "end": 1786426867708,
+                                        "duration": 251521
+                                    }
+                                ],
+                                "filesExt": [
+                                    ".vscode-chat-customizations-evaluations-#1-Chat Customizations Evaluations",
+                                    ".html",
+                                    ".workingtime"
+                                ]
+                            },
+                            "actionType": "Codding"
                         }
                     ]
                 }
