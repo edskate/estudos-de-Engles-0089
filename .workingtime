@@ -24,9 +24,7 @@
     },
     "data": [
         {
-            "config": {
-                "showIdle": false
-            },
+            "config": false,
             "user": "edskate",
             "dailySessions": [
                 {
@@ -5014,6 +5012,86 @@
                                 ],
                                 "filesExt": [
                                     "",
+                                    ".html"
+                                ]
+                            },
+                            "actionType": "Idle"
+                        }
+                    ]
+                },
+                {
+                    "date": "Fri Aug 21 2026",
+                    "sessions": [
+                        {
+                            "sessionInfo": {
+                                "id": "ea1567f4-0be5-4afb-b672-f0bb93334516",
+                                "duration": 286189,
+                                "idle": 1799721,
+                                "state": "Idle",
+                                "durations": [
+                                    {
+                                        "id": "49313f74-423e-40ed-8108-9299b8f7b51a",
+                                        "state": "Idle",
+                                        "begin": 1787365853508,
+                                        "end": 1787365853508,
+                                        "duration": 0
+                                    },
+                                    {
+                                        "id": "b7130a10-8e31-4144-b6be-466abedc72aa",
+                                        "state": "Ongoing",
+                                        "begin": 1787365567319,
+                                        "end": 1787365853508,
+                                        "duration": 286189
+                                    }
+                                ],
+                                "filesExt": [
+                                    ".html"
+                                ]
+                            },
+                            "actionType": "Idle"
+                        }
+                    ]
+                },
+                {
+                    "date": "Sat Aug 22 2026",
+                    "sessions": [
+                        {
+                            "sessionInfo": {
+                                "id": "ea1567f4-0be5-4afb-b672-f0bb93334516",
+                                "duration": 451505,
+                                "idle": 3599730,
+                                "state": "Idle",
+                                "durations": [
+                                    {
+                                        "id": "dcd1b11d-13b0-4949-b0b5-0c5833fef410",
+                                        "state": "Idle",
+                                        "begin": 1787368567070,
+                                        "end": 1787368567070,
+                                        "duration": 0
+                                    },
+                                    {
+                                        "id": "dff53b23-5b1b-4c3b-80f7-e0b40dbab8b6",
+                                        "state": "Ongoing",
+                                        "begin": 1787368401754,
+                                        "end": 1787368567070,
+                                        "duration": 165316
+                                    },
+                                    {
+                                        "id": "49313f74-423e-40ed-8108-9299b8f7b51a",
+                                        "state": "Idle",
+                                        "begin": 1787365853508,
+                                        "end": 1787368401754,
+                                        "duration": 2548246
+                                    },
+                                    {
+                                        "id": "b7130a10-8e31-4144-b6be-466abedc72aa",
+                                        "state": "Ongoing",
+                                        "begin": 1787365567319,
+                                        "end": 1787365853508,
+                                        "duration": 286189
+                                    }
+                                ],
+                                "filesExt": [
                                     ".html"
                                 ]
                             },
