@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pronunciation Day</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #000;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: red;
+        }
+
+        h2 {
+            color: aqua;
+        }
+
+        .descricao {
+            text-align: center;
+            color: lightgreen;
+            font-size: 18px;
+        }
+
+        .painel {
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .frase {
+            background: #151515;
+            border-left: 5px solid aqua;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        .ingles {
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .portugues {
+            color: lightgreen;
+            margin-top: 8px;
+        }
+
+        .pronuncia {
+            color: orange;
+            margin-top: 8px;
+            font-size: 17px;
+        }
+
+        button {
+            border: none;
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin: 10px 5px 5px 0;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .ouvir {
+            background: aqua;
+            color: black;
+        }
+
+        .devagar {
+            background: yellow;
+            color: black;
+        }
+
+        .microfone {
+            background: #32cd32;
+            color: black;
+        }
+
+        .parar {
+            background: red;
+            color: white;
+        }
+
+        .resultado {
+            background: #222;
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .certo {
+            color: #00ff66;
+            font-weight: bold;
+        }
+
+        .quase {
+            color: yellow;
+            font-weight: bold;
+        }
+
+        .errado {
+            color: #ff4444;
+            font-weight: bold;
+        }
+
+        #placar {
+            color: yellow;
+            font-size: 22px;
+        }
+
+        input[type="range"] {
+            width: 220px;
+        }
+
+        @media (max-width: 600px) {
+
+            button {
+                display: block;
+                width: 100%;
+                margin: 7px 0;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <h1>🎙️ Treino de Inglês Simples</h1>
+
+    <p class="descricao">
+        Ouça, repita e treine frase por frase.
+    </p>
+
+
+    <!-- CONFIGURAÇÕES -->
+
+    <div class="painel">
+
+        <h2>⚙️ Velocidade da voz</h2>
+
+        <label>
+            Velocidade:
+        </label>
+
+        <input
+            type="range"
+            id="velocidade"
+            min="0.4"
+            max="1.3"
+            value="0.8"
+            step="0.1"
+        >
+
+        <span id="valorVelocidade">
+            0.8x
+        </span>
+
+        <br><br>
+
+        <button
+            class="parar"
+            onclick="pararVoz()"
+        >
+            ⏹ Parar voz
+        </button>
+
+    </div>
+
+
+    <h2>📚 Pronunciation of the Day</h2>
+
+    <div id="listaFrases"></div>
+
+
+    <!-- PLACAR -->
+
+    <div class="painel">
+
+        <h2>🏆 Meu treinamento</h2>
+
+        <div id="placar">
+            Acertos: 0 | Tentativas: 0
+        </div>
+
+        <br>
+
+        <button onclick="zerarPlacar()">
+            🔄 Zerar treinamento
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* ==============================
+   FRASES
+================================ */
+
+const frases = [
+
+    {
+        en: "Hello, good evening. How are you?",
+        pt: "Olá, boa noite. Como você está?",
+        pronuncia: "rélou, gud ívning. ráu ar iú?"
+    },
+
+    {
+        en: "I'm fine, thank you.",
+        pt: "Estou bem, obrigado.",
+        pronuncia: "áim fáin, thénk iú."
+    },
+
+    {
+        en: "Do you have a show today?",
+        pt: "Você tem um show hoje?",
+        pronuncia: "du iú rév a shôu tudêi?"
+    },
+
+    {
+        en: "Today is another day.",
+        pt: "Hoje é outro dia.",
+        pronuncia: "tudêi iz anâder dêi."
+    },
+
+    {
+        en: "I put my hand in yours.",
+        pt: "Eu coloco minha mão na sua.",
+        pronuncia: "ái put mái rénd in iórz."
+    },
+
+    {
+        en: "I give my heart to you.",
+        pt: "Eu entrego meu coração a você.",
+        pronuncia: "ái guiv mái rárt tu iú."
+    },
+
+    {
+        en: "Together, we can do it.",
+        pt: "Juntos, nós conseguimos fazer isso.",
+        pronuncia: "tuguéder, uí kén du it."
+    },
+
+    {
+        en: "I cannot do it alone.",
+        pt: "Eu não consigo fazer isso sozinho.",
+        pronuncia: "ái kénót du it alôun."
+    },
+
+    {
+        en: "I need you.",
+        pt: "Eu preciso de você.",
+        pronuncia: "ái níid iú."
+    },
+
+    {
+        en: "We can do it together.",
+        pt: "Nós podemos fazer isso juntos.",
+        pronuncia: "uí kén du it tuguéder."
+    },
+
+    {
+        en: "One, two, three!",
+        pt: "Um, dois, três!",
+        pronuncia: "uãn, tú, thrí!"
+    }
+
+];
+
+
+/* ==============================
+   CRIAR CARDS
+================================ */
+
+const lista =
+    document.getElementById("listaFrases");
+
+
+frases.forEach((frase, index) => {
+
+    const card =
+        document.createElement("div");
+
+    card.className = "frase";
+
+    card.innerHTML = `
+
+        <div class="ingles">
+            ${index + 1}. ${frase.en}
+        </div>
+
+        <div class="portugues">
+            🇧🇷 ${frase.pt}
+        </div>
+
+        <div class="pronuncia">
+            🗣️ Como falar:
+            <strong>${frase.pronuncia}</strong>
+        </div>
+
+        <button
+            class="ouvir"
+            onclick="ouvirFrase(${index})"
+        >
+            🔊 Ouvir
+        </button>
+
+        <button
+            class="devagar"
+            onclick="ouvirDevagar(${index})"
+        >
+            🐢 Devagar
+        </button>
+
+        <button
+            class="microfone"
+            onclick="testarPronuncia(${index})"
+        >
+            🎤 Minha pronúncia
+        </button>
+
+        <div
+            id="resultado-${index}"
+            class="resultado"
+        >
+            Clique no microfone e fale a frase.
+        </div>
+
+    `;
+
+    lista.appendChild(card);
+
+});
+
+
+/* ==============================
+   VELOCIDADE
+================================ */
+
+const velocidade =
+    document.getElementById("velocidade");
+
+const valorVelocidade =
+    document.getElementById("valorVelocidade");
+
+
+velocidade.addEventListener(
+    "input",
+    function() {
+
+        valorVelocidade.textContent =
+            velocidade.value + "x";
+
+    }
+);
+
+
+/* ==============================
+   NARRAÇÃO
+================================ */
+
+function falar(texto, taxa) {
+
+    speechSynthesis.cancel();
+
+    const mensagem =
+        new SpeechSynthesisUtterance(texto);
+
+    mensagem.lang = "en-US";
+
+    mensagem.rate = taxa;
+
+    mensagem.pitch = 1;
+
+    speechSynthesis.speak(mensagem);
+}
+
+
+function ouvirFrase(index) {
+
+    falar(
+        frases[index].en,
+        Number(velocidade.value)
+    );
+
+}
+
+
+function ouvirDevagar(index) {
+
+    falar(
+        frases[index].en,
+        0.5
+    );
+
+}
+
+
+function pararVoz() {
+
+    speechSynthesis.cancel();
+
+}
+
+
+/* ==============================
+   RECONHECIMENTO DE VOZ
+================================ */
+
+const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+
+function criarReconhecimento() {
+
+    if (!SpeechRecognition) {
+
+        alert(
+            "Seu navegador não possui reconhecimento de voz. " +
+            "Use Google Chrome ou Microsoft Edge."
+        );
+
+        return null;
+
+    }
+
+
+    const reconhecimento =
+        new SpeechRecognition();
+
+
+    reconhecimento.lang = "en-US";
+
+    reconhecimento.interimResults = false;
+
+    reconhecimento.maxAlternatives = 3;
+
+
+    return reconhecimento;
+
+}
+
+
+/* ==============================
+   PLACAR
+================================ */
+
+let acertos =
+    Number(
+        localStorage.getItem("pronunciaAcertos")
+    ) || 0;
+
+
+let tentativas =
+    Number(
+        localStorage.getItem("pronunciaTentativas")
+    ) || 0;
+
+
+function atualizarPlacar() {
+
+    document.getElementById("placar")
+        .textContent =
+
+        "Acertos: " +
+        acertos +
+        " | Tentativas: " +
+        tentativas;
+
+
+    localStorage.setItem(
+        "pronunciaAcertos",
+        acertos
+    );
+
+
+    localStorage.setItem(
+        "pronunciaTentativas",
+        tentativas
+    );
+
+}
+
+
+function zerarPlacar() {
+
+    acertos = 0;
+
+    tentativas = 0;
+
+    atualizarPlacar();
+
+}
+
+
+atualizarPlacar();
+
+
+/* ==============================
+   LIMPAR TEXTO
+================================ */
+
+function limparTexto(texto) {
+
+    return texto
+
+        .toLowerCase()
+
+        .replace(/[.,!?']/g, "")
+
+        .replace(/\s+/g, " ")
+
+        .trim();
+
+}
+
+
+/* ==============================
+   CALCULAR SEMELHANÇA
+================================ */
+
+function calcularSemelhanca(correto, falado) {
+
+    const palavrasCorretas =
+        correto.split(" ");
+
+    const palavrasFaladas =
+        falado.split(" ");
+
+
+    let quantidadeCorreta = 0;
+
+
+    palavrasCorretas.forEach(
+
+        palavra => {
+
+            if (
+                palavrasFaladas.includes(
+                    palavra
+                )
+            ) {
+
+                quantidadeCorreta++;
+
+            }
+
+        }
+
+    );
+
+
+    return Math.round(
+
+        (
+            quantidadeCorreta /
+            palavrasCorretas.length
+        )
+
+        * 100
+
+    );
+
+}
+
+
+/* ==============================
+   TESTAR PRONÚNCIA
+================================ */
+
+function testarPronuncia(index) {
+
+    const recognition =
+        criarReconhecimento();
+
+
+    if (!recognition) {
+
+        return;
+
+    }
+
+
+    const resultado =
+        document.getElementById(
+            "resultado-" + index
+        );
+
+
+    const fraseCorreta =
+        frases[index].en;
+
+
+    resultado.innerHTML =
+
+        "🎤 <strong>Estou ouvindo...</strong>" +
+
+        "<br><br>Fale:" +
+
+        "<br><strong>" +
+
+        fraseCorreta +
+
+        "</strong>";
+
+
+    recognition.start();
+
+
+    recognition.onresult =
+        function(event) {
+
+
+            const falado =
+
+                event.results[0][0]
+
+                .transcript
+
+                .trim();
+
+
+            const corretoLimpo =
+                limparTexto(fraseCorreta);
+
+
+            const faladoLimpo =
+                limparTexto(falado);
+
+
+            const porcentagem =
+                calcularSemelhanca(
+                    corretoLimpo,
+                    faladoLimpo
+                );
+
+
+            tentativas++;
+
+
+            /*
+            85% ou mais
+            */
+
+            if (porcentagem >= 85) {
+
+
+                acertos++;
+
+
+                resultado.innerHTML =
+
+                    "<span class='certo'>" +
+
+                    "✅ Excelente!" +
+
+                    "</span>" +
+
+                    "<br><br>" +
+
+                    "Pronúncia reconhecida: " +
+
+                    "<strong>" +
+
+                    porcentagem +
+
+                    "%</strong>" +
+
+                    "<br><br>" +
+
+                    "Você falou:" +
+
+                    "<br><strong>" +
+
+                    falado +
+
+                    "</strong>";
+
+            }
+
+
+            /*
+            60% até 84%
+            */
+
+            else if (porcentagem >= 60) {
+
+
+                resultado.innerHTML =
+
+                    "<span class='quase'>" +
+
+                    "🟡 Muito perto!" +
+
+                    "</span>" +
+
+                    "<br><br>" +
+
+                    porcentagem +
+
+                    "% reconhecido." +
+
+                    "<br><br>" +
+
+                    "Você falou:" +
+
+                    "<br><strong>" +
+
+                    falado +
+
+                    "</strong>" +
+
+                    "<br><br>" +
+
+                    "Tente falar:" +
+
+                    "<br><strong>" +
+
+                    frases[index].pronuncia +
+
+                    "</strong>";
+
+            }
+
+
+            /*
+            Menos de 60%
+            */
+
+            else {
+
+
+                resultado.innerHTML =
+
+                    "<span class='errado'>" +
+
+                    "❌ Tente novamente." +
+
+                    "</span>" +
+
+                    "<br><br>" +
+
+                    porcentagem +
+
+                    "% reconhecido." +
+
+                    "<br><br>" +
+
+                    "O navegador entendeu:" +
+
+                    "<br><strong>" +
+
+                    falado +
+
+                    "</strong>" +
+
+                    "<br><br>" +
+
+                    "Frase correta:" +
+
+                    "<br><strong>" +
+
+                    fraseCorreta +
+
+                    "</strong>" +
+
+                    "<br><br>" +
+
+                    "Como falar:" +
+
+                    "<br><strong>" +
+
+                    frases[index].pronuncia +
+
+                    "</strong>";
+
+            }
+
+
+            atualizarPlacar();
+
+        };
+
+
+    recognition.onerror =
+        function(event) {
+
+
+            resultado.innerHTML =
+
+                "<span class='errado'>" +
+
+                "⚠️ Não consegui reconhecer sua voz." +
+
+                "</span>" +
+
+                "<br><br>" +
+
+                "Clique novamente no microfone " +
+
+                "e fale um pouco mais devagar.";
+
+        };
+
+}
+
+</script>
+
+</body>
+</html>
