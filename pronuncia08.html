@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>English Pronunciation - Control</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+        background: #000;
+        color: white;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: auto;
+    }
+
+    h1 {
+        color: #ff3333;
+        text-align: center;
+    }
+
+    h2 {
+        color: aqua;
+    }
+
+    .palavra {
+        text-align: center;
+        font-size: 48px;
+        color: yellow;
+        font-weight: bold;
+    }
+
+    .pronuncia {
+        text-align: center;
+        font-size: 23px;
+        color: lightgreen;
+        margin-bottom: 20px;
+    }
+
+    .card {
+        background: #111;
+        border: 1px solid #333;
+        border-left: 5px solid aqua;
+        border-radius: 10px;
+        padding: 18px;
+        margin: 15px 0;
+    }
+
+    .english {
+        color: white;
+        font-size: 22px;
+        font-weight: bold;
+    }
+
+    .portugues {
+        color: lightgreen;
+        margin-top: 8px;
+    }
+
+    .fala {
+        color: orange;
+        margin-top: 8px;
+    }
+
+    button {
+        padding: 10px 15px;
+        margin: 8px 5px 5px 0;
+        border: none;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .ouvir {
+        background: aqua;
+    }
+
+    .lento {
+        background: yellow;
+    }
+
+    .falar {
+        background: #32cd32;
+    }
+
+    .parar {
+        background: #ff3333;
+        color: white;
+    }
+
+    .resultado {
+        margin-top: 12px;
+        padding: 12px;
+        border-radius: 8px;
+        background: #222;
+    }
+
+    .certo {
+        color: #00ff66;
+        font-weight: bold;
+    }
+
+    .errado {
+        color: #ff4444;
+        font-weight: bold;
+    }
+
+    #placar {
+        font-size: 22px;
+        color: yellow;
+    }
+
+    input[type="range"] {
+        width: 200px;
+    }
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🎤 English Pronunciation Training</h1>
+
+<div class="card">
+
+    <div class="palavra">
+        CONTROL
+    </div>
+
+    <div class="pronuncia">
+        Aproximação para português:
+        <strong>kãn-TRÔUL</strong>
+    </div>
+
+    <div style="text-align:center;">
+
+        <button class="ouvir"
+                onclick="falarTexto('control', 0.8)">
+            🔊 Ouvir
+        </button>
+
+        <button class="lento"
+                onclick="falarTexto('control', 0.5)">
+            🐢 Ouvir devagar
+        </button>
+
+        <button class="falar"
+                onclick="treinarPalavra()">
+            🎤 Falar CONTROL
+        </button>
+
+    </div>
+
+    <div id="resultadoPalavra" class="resultado">
+        Clique em 🎤 e fale: <strong>control</strong>
+    </div>
+
+</div>
+
+
+<div class="card">
+
+<h2>⚙️ Velocidade da narração</h2>
+
+<input
+    type="range"
+    id="velocidade"
+    min="0.4"
+    max="1.3"
+    value="0.8"
+    step="0.1"
+>
+
+<span id="velocidadeValor">
+    0.8x
+</span>
+
+<button class="parar"
+        onclick="speechSynthesis.cancel()">
+    ⏹ Parar
+</button>
+
+</div>
+
+
+<h2>📚 Frases para treinamento</h2>
+
+<div id="lista"></div>
+
+
+<div class="card">
+
+<h2>🏆 Resultado do estudo</h2>
+
+<div id="placar">
+    Acertos: 0 | Tentativas: 0
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+const frases = [
+
+{
+    en: "No one can control you.",
+    pt: "Ninguém pode controlar você."
+},
+
+{
+    en: "You are in control.",
+    pt: "Você está no controle."
+},
+
+{
+    en: "Don't control me.",
+    pt: "Não me controle."
+},
+
+{
+    en: "You can't control me.",
+    pt: "Você não pode me controlar."
+},
+
+{
+    en: "We are in control.",
+    pt: "Nós estamos no controle."
+},
+
+{
+    en: "She is in control.",
+    pt: "Ela está no controle."
+},
+
+{
+    en: "He is in control.",
+    pt: "Ele está no controle."
+},
+
+{
+    en: "They are in control.",
+    pt: "Eles estão no controle."
+},
+
+{
+    en: "Are you in control?",
+    pt: "Você está no controle?"
+},
+
+{
+    en: "I am in control.",
+    pt: "Eu estou no controle."
+},
+
+{
+    en: "Stop controlling me.",
+    pt: "Pare de me controlar."
+},
+
+{
+    en: "You need to control yourself.",
+    pt: "Você precisa se controlar."
+},
+
+{
+    en: "Everything is under control.",
+    pt: "Tudo está sob controle."
+},
+
+{
+    en: "I have control of the situation.",
+    pt: "Eu tenho controle da situação."
+},
+
+{
+    en: "Great! You are in control.",
+    pt: "Ótimo! Você está no controle."
+}
+
+];
+
+
+let acertos =
+    Number(localStorage.getItem("acertosEnglish")) || 0;
+
+let tentativas =
+    Number(localStorage.getItem("tentativasEnglish")) || 0;
+
+
+const lista =
+    document.getElementById("lista");
+
+
+const velocidade =
+    document.getElementById("velocidade");
+
+
+const velocidadeValor =
+    document.getElementById("velocidadeValor");
+
+
+velocidade.addEventListener(
+    "input",
+    function() {
+
+        velocidadeValor.textContent =
+            velocidade.value + "x";
+
+    }
+);
+
+
+function atualizarPlacar() {
+
+    document.getElementById("placar").innerHTML =
+        "Acertos: " +
+        acertos +
+        " | Tentativas: " +
+        tentativas;
+
+    localStorage.setItem(
+        "acertosEnglish",
+        acertos
+    );
+
+    localStorage.setItem(
+        "tentativasEnglish",
+        tentativas
+    );
+}
+
+
+atualizarPlacar();
+
+
+frases.forEach((frase, index) => {
+
+    const card =
+        document.createElement("div");
+
+    card.className = "card";
+
+    card.innerHTML = `
+
+        <div class="english">
+
+            ${index + 1}.
+            ${destacarControl(frase.en)}
+
+        </div>
+
+        <div class="portugues">
+
+            🇧🇷 ${frase.pt}
+
+        </div>
+
+        <div class="fala">
+
+            Pronúncia aproximada:
+            ${pronunciaAproximada(frase.en)}
+
+        </div>
+
+        <button
+            class="ouvir"
+            onclick="falarFrase(${index})">
+
+            🔊 Ouvir
+
+        </button>
+
+        <button
+            class="lento"
+            onclick="falarDevagar(${index})">
+
+            🐢 Devagar
+
+        </button>
+
+        <button
+            class="falar"
+            onclick="testarPronuncia(${index})">
+
+            🎤 Minha pronúncia
+
+        </button>
+
+        <div
+            id="resultado-${index}"
+            class="resultado">
+
+            Fale a frase para testar.
+
+        </div>
+
+    `;
+
+    lista.appendChild(card);
+
+});
+
+
+function destacarControl(texto) {
+
+    return texto.replace(
+        /control/gi,
+        '<span style="color:yellow">$&</span>'
+    );
+
+}
+
+
+function pronunciaAproximada(texto) {
+
+    const mapa = {
+
+        "No one can control you.":
+        "nôu uãn kén kãn-TRÔUL iú",
+
+        "You are in control.":
+        "iú ar in kãn-TRÔUL",
+
+        "Don't control me.":
+        "dount kãn-TRÔUL mí",
+
+        "You can't control me.":
+        "iú ként kãn-TRÔUL mí",
+
+        "We are in control.":
+        "uí ar in kãn-TRÔUL",
+
+        "She is in control.":
+        "shi iz in kãn-TRÔUL",
+
+        "He is in control.":
+        "hi iz in kãn-TRÔUL",
+
+        "They are in control.":
+        "dhei ar in kãn-TRÔUL",
+
+        "Are you in control?":
+        "ar iú in kãn-TRÔUL",
+
+        "I am in control.":
+        "ái ém in kãn-TRÔUL",
+
+        "Stop controlling me.":
+        "stáp kãn-TRÔU-ling mí",
+
+        "You need to control yourself.":
+        "iú níid tu kãn-TRÔUL iór-self",
+
+        "Everything is under control.":
+        "évri-thing iz ânder kãn-TRÔUL",
+
+        "I have control of the situation.":
+        "ái rév kãn-TRÔUL âv dhâ sitchuêichãn",
+
+        "Great! You are in control.":
+        "greit! iú ar in kãn-TRÔUL"
+
+    };
+
+    return mapa[texto] || "";
+
+}
+
+
+function falarTexto(texto, rate) {
+
+    speechSynthesis.cancel();
+
+    const voz =
+        new SpeechSynthesisUtterance(texto);
+
+    voz.lang = "en-US";
+
+    voz.rate = rate;
+
+    speechSynthesis.speak(voz);
+
+}
+
+
+function falarFrase(index) {
+
+    falarTexto(
+        frases[index].en,
+        Number(velocidade.value)
+    );
+
+}
+
+
+function falarDevagar(index) {
+
+    falarTexto(
+        frases[index].en,
+        0.5
+    );
+
+}
+
+
+// RECONHECIMENTO DE VOZ
+
+const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+
+function criarReconhecimento() {
+
+    if (!SpeechRecognition) {
+
+        alert(
+            "Seu navegador não possui reconhecimento de voz. " +
+            "Tente usar Google Chrome ou Microsoft Edge."
+        );
+
+        return null;
+    }
+
+    const recognition =
+        new SpeechRecognition();
+
+    recognition.lang = "en-US";
+
+    recognition.interimResults = false;
+
+    recognition.maxAlternatives = 3;
+
+    return recognition;
+}
+
+
+// TESTE DA PALAVRA CONTROL
+
+function treinarPalavra() {
+
+    const recognition =
+        criarReconhecimento();
+
+    if (!recognition) return;
+
+
+    const resultado =
+        document.getElementById(
+            "resultadoPalavra"
+        );
+
+
+    resultado.innerHTML =
+        "🎤 Estou ouvindo... fale <strong>CONTROL</strong>";
+
+
+    recognition.start();
+
+
+    recognition.onresult =
+        function(event) {
+
+        let falado =
+            event.results[0][0]
+            .transcript
+            .toLowerCase()
+            .trim();
+
+
+        tentativas++;
+
+
+        if (falado.includes("control")) {
+
+            acertos++;
+
+            resultado.innerHTML =
+
+            "<span class='certo'>" +
+
+            "✅ Muito bom! Pronúncia reconhecida." +
+
+            "</span>" +
+
+            "<br><br>Você falou: <strong>" +
+
+            falado +
+
+            "</strong>";
+
+        }
+
+        else {
+
+            resultado.innerHTML =
+
+            "<span class='errado'>" +
+
+            "❌ Tente novamente." +
+
+            "</span>" +
+
+            "<br><br>O navegador entendeu: <strong>" +
+
+            falado +
+
+            "</strong>" +
+
+            "<br><br>Correto: <strong>control</strong>" +
+
+            "<br>Fale aproximadamente: " +
+
+            "<strong>kãn-TRÔUL</strong>";
+
+        }
+
+
+        atualizarPlacar();
+
+    };
+
+
+    recognition.onerror =
+        function() {
+
+        resultado.innerHTML =
+            "<span class='errado'>" +
+            "Não consegui ouvir. Tente novamente." +
+            "</span>";
+
+    };
+
+}
+
+
+// TESTE DAS FRASES
+
+function testarPronuncia(index) {
+
+    const recognition =
+        criarReconhecimento();
+
+    if (!recognition) return;
+
+
+    const resultado =
+        document.getElementById(
+            "resultado-" + index
+        );
+
+
+    const fraseCorreta =
+        frases[index].en;
+
+
+    resultado.innerHTML =
+        "🎤 Estou ouvindo... fale:<br><strong>" +
+        fraseCorreta +
+        "</strong>";
+
+
+    recognition.start();
+
+
+    recognition.onresult =
+        function(event) {
+
+        const falado =
+            event.results[0][0]
+            .transcript
+            .trim();
+
+
+        const esperado =
+            limparTexto(fraseCorreta);
+
+
+        const recebido =
+            limparTexto(falado);
+
+
+        tentativas++;
+
+
+        const nota =
+            calcularSemelhanca(
+                esperado,
+                recebido
+            );
+
+
+        if (nota >= 75) {
+
+            acertos++;
+
+            resultado.innerHTML =
+
+                "<span class='certo'>" +
+
+                "✅ Muito bom! " +
+
+                nota +
+
+                "% reconhecido." +
+
+                "</span>" +
+
+                "<br><br>Você falou:<br>" +
+
+                "<strong>" +
+                falado +
+                "</strong>";
+
+        }
+
+        else {
+
+            resultado.innerHTML =
+
+                "<span class='errado'>" +
+
+                "❌ Vamos tentar novamente. " +
+
+                nota +
+
+                "% reconhecido." +
+
+                "</span>" +
+
+                "<br><br>Você falou:<br>" +
+
+                "<strong>" +
+                falado +
+                "</strong>" +
+
+                "<br><br>Frase correta:<br>" +
+
+                "<strong>" +
+                fraseCorreta +
+                "</strong>" +
+
+                "<br><br>Pronúncia aproximada:<br>" +
+
+                "<strong>" +
+                pronunciaAproximada(fraseCorreta) +
+                "</strong>";
+
+        }
+
+
+        atualizarPlacar();
+
+    };
+
+
+    recognition.onerror =
+        function() {
+
+        resultado.innerHTML =
+
+            "<span class='errado'>" +
+
+            "⚠️ Não consegui reconhecer sua voz." +
+
+            "<br>Tente falar novamente." +
+
+            "</span>";
+
+    };
+
+}
+
+
+// LIMPAR TEXTO
+
+function limparTexto(texto) {
+
+    return texto
+        .toLowerCase()
+        .replace(/[.,!?']/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
+
+}
+
+
+// COMPARAÇÃO SIMPLES
+
+function calcularSemelhanca(correto, falado) {
+
+    const palavrasCorretas =
+        correto.split(" ");
+
+    const palavrasFaladas =
+        falado.split(" ");
+
+
+    let certas = 0;
+
+
+    palavrasCorretas.forEach(
+        palavra => {
+
+            if (
+                palavrasFaladas.includes(
+                    palavra
+                )
+            ) {
+
+                certas++;
+
+            }
+
+        }
+    );
+
+
+    return Math.round(
+
+        (
+            certas /
+            palavrasCorretas.length
+        )
+
+        * 100
+
+    );
+
+}
+
+</script>
+
+</body>
+</html>

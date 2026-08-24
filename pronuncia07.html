@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Control - English Pronunciation Study</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #000;
+            color: aqua;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: red;
+            text-shadow: 2px 2px #333;
+        }
+
+        h2 {
+            color: yellow;
+        }
+
+        .descricao {
+            color: lightgreen;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .painel {
+            background: #111;
+            border: 1px solid aqua;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        label {
+            color: white;
+        }
+
+        select,
+        input,
+        button {
+            padding: 10px;
+            margin: 5px;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+        }
+
+        button {
+            background: aqua;
+            color: black;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: yellow;
+        }
+
+        .frase {
+            background: #151515;
+            border-left: 5px solid aqua;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .texto-frase {
+            color: white;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .control {
+            color: yellow;
+            font-weight: bold;
+        }
+
+        .traducao {
+            color: lightgreen;
+            font-size: 15px;
+            margin: 5px 0 10px;
+        }
+
+        .pronuncia {
+            color: orange;
+            font-size: 15px;
+        }
+
+        .botoes {
+            margin-top: 10px;
+        }
+
+        .btn-stop {
+            background: red;
+            color: white;
+        }
+
+        .btn-repeat {
+            background: orange;
+        }
+
+        .palavra-principal {
+            text-align: center;
+            font-size: 40px;
+            color: yellow;
+            margin: 20px;
+        }
+
+        .fonetica {
+            text-align: center;
+            color: lightgreen;
+            font-size: 24px;
+        }
+
+        #contador {
+            color: yellow;
+            font-size: 22px;
+        }
+
+        footer {
+            text-align: center;
+            color: gray;
+            padding: 30px;
+        }
+
+        @media(max-width: 600px) {
+
+            button {
+                width: 100%;
+                margin: 5px 0;
+            }
+
+            select,
+            input {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🎤 CONTROL - English Pronunciation Study</h1>
+
+    <p class="descricao">
+        Listen, repeat and practice English sentences using the word
+        <strong>CONTROL</strong>.
+    </p>
+
+
+    <!-- PALAVRA PRINCIPAL -->
+
+    <div class="painel">
+
+        <h2>🔊 Word of the Day</h2>
+
+        <div class="palavra-principal">
+            CONTROL
+        </div>
+
+        <div class="fonetica">
+            Pronunciation: <strong>kuhn-TROHL</strong>
+        </div>
+
+        <div style="text-align:center; margin-top:20px;">
+
+            <button onclick="falar('control')">
+                🔊 Listen
+            </button>
+
+            <button class="btn-repeat" onclick="repetir('control', 5)">
+                🔁 Repeat 5x
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- CONTROLES -->
+
+    <div class="painel">
+
+        <h2>⚙️ Voice Settings</h2>
+
+        <label>
+            Voice:
+        </label>
+
+        <select id="vozes"></select>
+
+        <br>
+
+        <label>
+            Speed:
+        </label>
+
+        <input
+            type="range"
+            id="velocidade"
+            min="0.5"
+            max="1.5"
+            value="0.8"
+            step="0.1"
+        >
+
+        <span id="valorVelocidade">0.8x</span>
+
+        <br><br>
+
+        <button class="btn-stop" onclick="parar()">
+            ⏹ Stop Voice
+        </button>
+
+    </div>
+
+
+    <!-- FRASES -->
+
+    <h2>📚 Practice Sentences</h2>
+
+    <div id="listaFrases"></div>
+
+
+    <!-- CONTADOR -->
+
+    <div class="painel">
+
+        <h2>📊 Study Counter</h2>
+
+        <p>
+            Sentences listened to:
+            <span id="contador">0</span>
+        </p>
+
+        <button onclick="zerarContador()">
+            Reset Counter
+        </button>
+
+    </div>
+
+
+    <!-- EXPLICAÇÃO -->
+
+    <div class="painel">
+
+        <h2>🧠 Pronunciation Tip</h2>
+
+        <p class="descricao">
+
+            The word <strong>control</strong> has two syllables:
+
+            <br><br>
+
+            <strong>con + trol</strong>
+
+            <br><br>
+
+            The strongest part is:
+
+            <strong>TROL</strong>
+
+            <br><br>
+
+            Say it slowly:
+
+            <strong>kuhn — TROHL</strong>
+
+        </p>
+
+    </div>
+
+</div>
+
+
+<footer>
+
+    English Pronunciation Training 🎤
+
+</footer>
+
+
+<script>
+
+    const frases = [
+
+        {
+            ingles: "You know we're doing this for a reason, right?",
+            portugues: "Você sabe que estamos fazendo isso por uma razão, certo?"
+        },
+
+        {
+            ingles: "No one can control you.",
+            portugues: "Ninguém pode controlar você."
+        },
+
+        {
+            ingles: "Right now, you are in control if you want to be.",
+            portugues: "Agora, você está no controle se quiser."
+        },
+
+        {
+            ingles: "I never said you were in control.",
+            portugues: "Eu nunca disse que você estava no controle."
+        },
+
+        {
+            ingles: "So you want to control me?",
+            portugues: "Então você quer me controlar?"
+        },
+
+        {
+            ingles: "Don't control me.",
+            portugues: "Não me controle."
+        },
+
+        {
+            ingles: "You can't control me.",
+            portugues: "Você não pode me controlar."
+        },
+
+        {
+            ingles: "We are in control.",
+            portugues: "Nós estamos no controle."
+        },
+
+        {
+            ingles: "She is in control.",
+            portugues: "Ela está no controle."
+        },
+
+        {
+            ingles: "He is in control.",
+            portugues: "Ele está no controle."
+        },
+
+        {
+            ingles: "They are in control.",
+            portugues: "Eles estão no controle."
+        },
+
+        {
+            ingles: "Are you in control?",
+            portugues: "Você está no controle?"
+        },
+
+        {
+            ingles: "Will you be in control?",
+            portugues: "Você estará no controle?"
+        },
+
+        {
+            ingles: "So, what about control?",
+            portugues: "Então, e quanto ao controle?"
+        },
+
+        {
+            ingles: "Both of us need to be in control.",
+            portugues: "Nós dois precisamos estar no controle."
+        },
+
+        {
+            ingles: "Stop controlling me.",
+            portugues: "Pare de me controlar."
+        },
+
+        {
+            ingles: "We are going to control this.",
+            portugues: "Nós vamos controlar isso."
+        },
+
+        {
+            ingles: "What's in your control?",
+            portugues: "O que está sob seu controle?"
+        },
+
+        {
+            ingles: "Because you are in control.",
+            portugues: "Porque você está no controle."
+        },
+
+        {
+            ingles: "Great! You are in control.",
+            portugues: "Ótimo! Você está no controle."
+        },
+
+        {
+            ingles: "Help me control this.",
+            portugues: "Ajude-me a controlar isso."
+        },
+
+        {
+            ingles: "I surrender control.",
+            portugues: "Eu entrego o controle."
+        },
+
+        {
+            ingles: "I am not doing this for control.",
+            portugues: "Eu não estou fazendo isso por controle."
+        }
+
+    ];
+
+
+    const lista = document.getElementById("listaFrases");
+
+    let contador = Number(localStorage.getItem("contadorControl")) || 0;
+
+    document.getElementById("contador").textContent = contador;
+
+
+    // CRIA AS FRASES
+
+    frases.forEach((frase, index) => {
+
+        const div = document.createElement("div");
+
+        div.className = "frase";
+
+        let textoDestacado = frase.ingles.replace(
+            /control/gi,
+            '<span class="control">$&</span>'
+        );
+
+        div.innerHTML = `
+
+            <div class="texto-frase">
+                ${index + 1}. ${textoDestacado}
+            </div>
+
+            <div class="traducao">
+                🇧🇷 ${frase.portugues}
+            </div>
+
+            <div class="botoes">
+
+                <button onclick="falarFrase(${index})">
+                    🔊 Listen
+                </button>
+
+                <button
+                    class="btn-repeat"
+                    onclick="repetirFrase(${index}, 3)"
+                >
+                    🔁 Repeat 3x
+                </button>
+
+            </div>
+
+        `;
+
+        lista.appendChild(div);
+
+    });
+
+
+    // VOZES
+
+    let vozesDisponiveis = [];
+
+    const selectVoz = document.getElementById("vozes");
+
+    function carregarVozes() {
+
+        vozesDisponiveis = speechSynthesis.getVoices();
+
+        selectVoz.innerHTML = "";
+
+        const vozesIngles = vozesDisponiveis.filter(
+            voz => voz.lang.toLowerCase().startsWith("en")
+        );
+
+        vozesIngles.forEach((voz) => {
+
+            const option = document.createElement("option");
+
+            option.textContent =
+                `${voz.name} - ${voz.lang}`;
+
+            option.value =
+                vozesDisponiveis.indexOf(voz);
+
+            selectVoz.appendChild(option);
+
+        });
+
+    }
+
+    speechSynthesis.onvoiceschanged = carregarVozes;
+
+    carregarVozes();
+
+
+    // VELOCIDADE
+
+    const velocidade =
+        document.getElementById("velocidade");
+
+    const valorVelocidade =
+        document.getElementById("valorVelocidade");
+
+    velocidade.addEventListener("input", function () {
+
+        valorVelocidade.textContent =
+            velocidade.value + "x";
+
+    });
+
+
+    // FALAR
+
+    function falar(texto) {
+
+        speechSynthesis.cancel();
+
+        const mensagem =
+            new SpeechSynthesisUtterance(texto);
+
+        mensagem.lang = "en-US";
+
+        mensagem.rate =
+            Number(velocidade.value);
+
+        const indice =
+            Number(selectVoz.value);
+
+        if (vozesDisponiveis[indice]) {
+
+            mensagem.voice =
+                vozesDisponiveis[indice];
+
+        }
+
+        speechSynthesis.speak(mensagem);
+
+    }
+
+
+    // FALAR FRASE
+
+    function falarFrase(index) {
+
+        falar(frases[index].ingles);
+
+        contador++;
+
+        salvarContador();
+
+    }
+
+
+    // REPETIR FRASE
+
+    function repetirFrase(index, quantidade) {
+
+        let atual = 0;
+
+        function executar() {
+
+            if (atual >= quantidade)
+                return;
+
+            const mensagem =
+                new SpeechSynthesisUtterance(
+                    frases[index].ingles
+                );
+
+            mensagem.lang = "en-US";
+
+            mensagem.rate =
+                Number(velocidade.value);
+
+            const indice =
+                Number(selectVoz.value);
+
+            if (vozesDisponiveis[indice]) {
+
+                mensagem.voice =
+                    vozesDisponiveis[indice];
+
+            }
+
+            mensagem.onend = function () {
+
+                atual++;
+
+                setTimeout(executar, 500);
+
+            };
+
+            speechSynthesis.speak(mensagem);
+
+        }
+
+        speechSynthesis.cancel();
+
+        executar();
+
+        contador++;
+
+        salvarContador();
+
+    }
+
+
+    // REPETIR PALAVRA
+
+    function repetir(texto, quantidade) {
+
+        let atual = 0;
+
+        function executar() {
+
+            if (atual >= quantidade)
+                return;
+
+            const mensagem =
+                new SpeechSynthesisUtterance(texto);
+
+            mensagem.lang = "en-US";
+
+            mensagem.rate =
+                Number(velocidade.value);
+
+            mensagem.onend = function () {
+
+                atual++;
+
+                setTimeout(executar, 400);
+
+            };
+
+            speechSynthesis.speak(mensagem);
+
+        }
+
+        speechSynthesis.cancel();
+
+        executar();
+
+    }
+
+
+    // PARAR
+
+    function parar() {
+
+        speechSynthesis.cancel();
+
+    }
+
+
+    // CONTADOR
+
+    function salvarContador() {
+
+        localStorage.setItem(
+            "contadorControl",
+            contador
+        );
+
+        document.getElementById(
+            "contador"
+        ).textContent = contador;
+
+    }
+
+
+    function zerarContador() {
+
+        contador = 0;
+
+        localStorage.setItem(
+            "contadorControl",
+            contador
+        );
+
+        document.getElementById(
+            "contador"
+        ).textContent = contador;
+
+    }
+
+</script>
+<hr>
+<a href="pronuncia08.html"><h2>Pronuncia 08</h2></a>
+</body>
+</html>
